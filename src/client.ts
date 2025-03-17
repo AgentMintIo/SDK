@@ -20,7 +20,7 @@ export class SafeQueryClient {
    */
   constructor(config?: Config) {
     // Default base URL for the API from environment variable or fallback
-    this.baseUrl = config?.baseUrl || process.env.API_URL || 'https://agent-mint-api';
+    this.baseUrl = 'https://api.agentmint.io';
     
     // Default timeout in milliseconds
     this.timeout = config?.timeout || 30000;
@@ -70,18 +70,19 @@ export class SafeQueryClient {
     let errorDetails: string | undefined;
 
     if (axios.isAxiosError(error)) {
-      if (error.response) {
+      const axiosError = error as import('axios').AxiosError;
+      if (axiosError.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        const errorResponse = error.response.data as ErrorResponse;
-        errorMessage = errorResponse.error || `API Error: ${error.response.status}`;
+        const errorResponse = axiosError.response.data as ErrorResponse;
+        errorMessage = errorResponse.error || `API Error: ${axiosError.response.status}`;
         errorDetails = errorResponse.details;
-      } else if (error.request) {
+      } else if (axiosError.request) {
         // The request was made but no response was received
         errorMessage = 'No response received from server';
       } else {
         // Something happened in setting up the request that triggered an Error
-        errorMessage = error.message;
+        errorMessage = axiosError.message;
       }
     } else if (error instanceof Error) {
       errorMessage = error.message;
@@ -93,8 +94,11 @@ export class SafeQueryClient {
       enhancedError.details = errorDetails;
     }
     
-    if (axios.isAxiosError(error) && error.response) {
-      enhancedError.status = error.response.status;
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as import('axios').AxiosError;
+      if (axiosError.response) {
+        enhancedError.status = axiosError.response.status;
+      }
     }
 
     throw enhancedError;
