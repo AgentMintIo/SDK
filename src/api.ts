@@ -16,7 +16,7 @@ import {
  */
 export async function getPoolData(mintAddress: string, config?: Config): Promise<PoolResponse> {
   const client = new SafeQueryClient(config);
-  return client.get<PoolResponse>('/solana/pool-data', { mintAddress });
+  return client.get<PoolResponse>('/api/solana/pool-data', { mintAddress });
 }
 
 /**
@@ -27,7 +27,7 @@ export async function getPoolData(mintAddress: string, config?: Config): Promise
  */
 export async function getMarketCap(mintAddress: string, config?: Config): Promise<MarketCapResponse> {
   const client = new SafeQueryClient(config);
-  return client.get<MarketCapResponse>('/solana/market-cap', { mintAddress });
+  return client.get<MarketCapResponse>('/api/solana/market-cap', { mintAddress });
 }
 
 /**
@@ -43,7 +43,7 @@ export async function getTokenHolders(
   config?: Config
 ): Promise<TokenHoldersResponse> {
   const client = new SafeQueryClient(config);
-  return client.get<TokenHoldersResponse>('/solana/token-holders', { mintAddress, limit });
+  return client.get<TokenHoldersResponse>('/api/solana/token-holders', { mintAddress, limit });
 }
 
 /**
@@ -59,7 +59,7 @@ export async function getTopTraders(
   config?: Config
 ): Promise<TopTradersResponse> {
   const client = new SafeQueryClient(config);
-  return client.get<TopTradersResponse>('/solana/top-traders', { mintAddress, limit });
+  return client.get<TopTradersResponse>('/api/solana/top-traders', { mintAddress, limit });
 }
 
 /**
@@ -70,5 +70,5 @@ export async function getTopTraders(
  */
 export async function getTokenTradeData(mintAddress: string, config?: Config): Promise<TradeResponse> {
   const client = new SafeQueryClient(config);
-  return client.get<TradeResponse>('/solana/token-trade', { mintAddress });
+  return client.get<TradeResponse>('/api/solana/token-trade', { mintAddress });
 } 
